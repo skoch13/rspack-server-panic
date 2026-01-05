@@ -1,19 +1,20 @@
-# rspack-repro
+# Rspack Dev Server - Orphaned Process Bug
 
-- [Rspack website](https://rspack.dev/)
-- [Rspack repo](https://github.com/web-infra-dev/rspack)
+Reproduction for https://github.com/web-infra-dev/rspack/issues/12629
 
-A GitHub template for creating a Rspack minimal reproducible example.
+## Bug
 
-webpack is included for comparing the outputs.
+When running `pnpm --parallel -r dev` with multiple rspack dev servers, if one crashes, the other `rspack_node` processes are not killed and continue holding their ports.
 
-## Usages
+## Reproduce
 
-`pnpm run build` would both run Rspack and webpack with config `./rspack.config.mjs`
+```bash
+pnpm install
+pnpm dev  # remote2 crashes immediately, orphaning host and remote1
 
-- Rspack will emits output in `./rspack-dist`
-- webpack will emits output in `./webpack-dist`
+# Ports 3000 and 3001 are still held by orphaned processes
+pnpm dev  # Fails with EADDRINUSE
 
-`./webpack-dist` and `./rspack-dist` are purposely not added to `.gitignore`.
-
-It is recommended to commit these files so we quickly compare the outputs.
+# Manual cleanup required
+pkill -f rspack
+```

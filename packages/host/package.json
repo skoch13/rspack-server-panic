@@ -1,14 +1,14 @@
 {
-  "name": "rspack-orphaned-process-repro",
+  "name": "host",
   "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "pnpm --parallel -r dev"
+    "dev": "rspack serve",
+    "build": "rspack build"
   },
-  "devDependencies": {
+  "dependencies": {
     "@rspack/cli": "^1.7.0",
     "@rspack/core": "^1.7.0"
-  },
-  "packageManager": "pnpm@10.20.0"
+  }
 }
